@@ -14,22 +14,23 @@ public abstract class Tile {
 
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTile() {
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
-        for (int i = 0; i < 64; i++){
+        for (int i = 0; i < BoardUtils.NUM_TITLES; i++){
             emptyTileMap.put(i, new EmptyTile(i));
         }
         //Collections.unmodifiableMap(emptyTileMap);
+        //use of immutable of a third library guava
         return ImmutableMap.copyOf(emptyTileMap);
     }
     public static Tile createTile(final int tileCoordinate, final Piece piece){
         return piece != null ? new OccupiedTile(tileCoordinate , piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
     }
-    private Tile(int tileCoordinate){
+    private Tile(final int tileCoordinate){
         this.tileCoordinate = tileCoordinate;
 
     }
     public abstract boolean isTileOccupied();
     public abstract Piece getPiece();
-
+    //Immutable class and static inner class
     public static final class EmptyTile extends Tile{
        private EmptyTile(final int coordinate){
             super(coordinate);
@@ -46,10 +47,11 @@ public abstract class Tile {
             return null;
         }
     }
+    //Immutable class and static inner class
     public static final class OccupiedTile extends Tile{
         final private Piece pieceOnTile;
 
-        private OccupiedTile(int tileCoordinate, Piece pieceOnTile){
+        private OccupiedTile(int tileCoordinate,final  Piece pieceOnTile){
             super(tileCoordinate);
             this.pieceOnTile = pieceOnTile;
         }
