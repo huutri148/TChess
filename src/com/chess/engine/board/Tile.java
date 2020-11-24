@@ -28,6 +28,8 @@ public abstract class Tile {
         this.tileCoordinate = tileCoordinate;
 
     }
+
+
     public abstract boolean isTileOccupied();
     public abstract Piece getPiece();
     //Immutable class and static inner class
@@ -46,6 +48,11 @@ public abstract class Tile {
         public Piece getPiece() {
             return null;
         }
+
+        @Override
+        public String toString() {
+            return "-";
+        }
     }
     //Immutable class and static inner class
     public static final class OccupiedTile extends Tile{
@@ -54,6 +61,12 @@ public abstract class Tile {
         private OccupiedTile(int tileCoordinate,final  Piece pieceOnTile){
             super(tileCoordinate);
             this.pieceOnTile = pieceOnTile;
+        }
+
+        @Override
+        public String toString() {
+           return getPiece().getPieceAlliance().isBlack() ? getPiece().toString().toLowerCase():
+                   getPiece().toString();
         }
 
         @Override

@@ -15,8 +15,8 @@ public class Queen extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             { -9, -8, -7, -1, 7, 8, 9};
 
-    Queen(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Queen(Alliance pieceAlliance, int piecePosition) {
+        super(pieceAlliance, piecePosition);
     }
 
     @Override
@@ -57,5 +57,9 @@ public class Queen extends Piece{
                                                     final int candidateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -9 || candidateOffset == 7 ||
                 candidateOffset == 1);
+    }
+    @Override
+    public String toString() {
+        return PieceType.QUEEN.toString();
     }
 }

@@ -6,7 +6,6 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,8 +14,8 @@ import java.util.List;
 public class Bishop extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             { -9, -7, 7 , 9};
-    Bishop(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Bishop(Alliance pieceAlliance, int piecePosition) {
+        super(pieceAlliance, piecePosition);
     }
 
     @Override
@@ -55,5 +54,10 @@ public class Bishop extends Piece {
     private static  boolean isEighthColumnExclusion(final int currentPosition,
                                                    final int candidateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -9 || candidateOffset == 7);
+    }
+
+    @Override
+    public String toString() {
+       return PieceType.BISHOP.toString();
     }
 }
