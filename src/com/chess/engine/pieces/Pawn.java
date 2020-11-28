@@ -16,7 +16,7 @@ public class Pawn extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             {8, 16, 7, 9};
     public Pawn( Alliance pieceAlliance, int piecePosition) {
-        super(pieceAlliance, piecePosition);
+        super(PieceType.PAWN,pieceAlliance, piecePosition);
     }
 
     @Override
