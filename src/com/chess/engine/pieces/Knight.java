@@ -20,7 +20,10 @@ public class Knight extends Piece{
     public Knight( final Alliance pieceAlliance,final int piecePosition) {
         super(PieceType.KNIGHT,pieceAlliance, piecePosition);
     }
-
+    @Override
+    public Knight movePiece(final Move move) {
+        return new Knight(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+    }
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         int candidateDestinationCoordinate;
