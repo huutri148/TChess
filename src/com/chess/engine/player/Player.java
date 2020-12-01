@@ -6,6 +6,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,12 +22,14 @@ public abstract class Player {
            final Collection<Move> opponentMoves){
         this.board = board;
         this.playerKing = establishKing();
-        this.legalMoves = legalMoves;
+        // calculate and concat so the legal moves list don't have
+        // the King Castle move
+        this.legalMoves = ImmutableList.copyOf(Iterables.concat(legalMoves,calculateKingCastles(legalMoves, opponentMoves)));
         this.isInCheck = !Player.calculateAttackOnTile(this.playerKing.getPiecePosition(),
                 opponentMoves).isEmpty();
     }
 
-    private static Collection<Move> calculateAttackOnTile(int piecePosition,
+    public static Collection<Move> calculateAttackOnTile(int piecePosition,
                                                            Collection<Move> opponentMoves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move : opponentMoves){
@@ -101,6 +104,8 @@ public abstract class Player {
     public abstract Alliance getAlliance();
     public abstract Player getOpponent();
 
+    protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals,
+                                                             Collection<Move> opponentsLegals);
 
 
 }
