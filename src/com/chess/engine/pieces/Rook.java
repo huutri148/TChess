@@ -14,8 +14,11 @@ import java.util.List;
 public class Rook extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             { -9, -1, 1 , 9};
-    public Rook(Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.ROOK,pieceAlliance, piecePosition);
+    public Rook(final Alliance pieceAlliance,final int piecePosition) {
+        super(PieceType.ROOK,piecePosition,pieceAlliance,true);
+    }
+    public Rook(final Alliance pieceAlliance,final int piecePosition,final boolean isFirstMove) {
+        super(PieceType.ROOK,piecePosition,pieceAlliance,isFirstMove);
     }
     @Override
     public Rook movePiece(final Move move) {

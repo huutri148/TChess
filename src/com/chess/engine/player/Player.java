@@ -68,7 +68,7 @@ public abstract class Player {
     }
     protected boolean hasEscapeMoves() {
         for (final Move move : this.legalMoves){
-            final MoveTranstion transtion = makeMove(move);
+            final MoveTransition transtion = makeMove(move);
             if(transtion.getMoveStatus().isDone()){
                 return true;
             }
@@ -84,9 +84,9 @@ public abstract class Player {
         return false;
     }
 
-    public MoveTranstion makeMove(final Move move){
+    public MoveTransition makeMove(final Move move){
         if (!isMoveLegal(move)){
-            return new MoveTranstion(this.board,move,MoveStatus.ILLEGAL_MOVE);
+            return new MoveTransition(this.board,move,MoveStatus.ILLEGAL_MOVE);
         }
 
         final Board transitionBoard = move.execute();
@@ -95,9 +95,9 @@ public abstract class Player {
                 getOpponent().getPlayerKing().getPiecePosition(),
                 transitionBoard.currentPlayer().getLegalMoves());
         if(!kingAttacks.isEmpty()){
-            return new MoveTranstion(this.board, move,MoveStatus.LEAVES_PLAYER_IN_CHECK);
+            return new MoveTransition(this.board, move,MoveStatus.LEAVES_PLAYER_IN_CHECK);
         }
-        return new MoveTranstion(transitionBoard, move, MoveStatus.DONE);
+        return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
     }
 
     public abstract Collection<Piece> getActivePieces();

@@ -15,8 +15,11 @@ import static com.chess.engine.board.Move.*;
 public class Pawn extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             {8, 16, 7, 9};
-    public Pawn( Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.PAWN,pieceAlliance, piecePosition);
+    public Pawn(final Alliance pieceAlliance,final int piecePosition) {
+        super(PieceType.PAWN,piecePosition,pieceAlliance,true);
+    }
+    public Pawn(final Alliance pieceAlliance,final int piecePosition,final boolean isFirstMove) {
+        super(PieceType.PAWN,piecePosition,pieceAlliance,isFirstMove);
     }
     @Override
     public Pawn movePiece(final Move move) {
@@ -41,7 +44,7 @@ public class Pawn extends Piece{
                         (this.getPieceAlliance().getDirection() * 8);
                 if(!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() &&
                 !board.getTile(candidateDestinationCoordinate).isTileOccupied()){
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    legalMoves.add(new PawnJump(board, this, candidateDestinationCoordinate));
                 }
             }   else if (currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite()) ||
@@ -49,7 +52,7 @@ public class Pawn extends Piece{
                     if(board.getTile(candidateDestinationCoordinate).isTileOccupied()){
                         final Piece pieceOnCoordinate = board.getTile(candidateDestinationCoordinate).getPiece();
                         if(this.pieceAlliance != pieceOnCoordinate.getPieceAlliance()){
-                            legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                            legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate,pieceOnCoordinate));
                         }
                     }
             }   else if(currentCandidateOffset ==  9 &&
@@ -58,7 +61,7 @@ public class Pawn extends Piece{
                 if(board.getTile(candidateDestinationCoordinate).isTileOccupied()){
                     final Piece pieceOnCoordinate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCoordinate.getPieceAlliance()){
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate,pieceOnCoordinate));
                     }
                 }
 
