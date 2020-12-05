@@ -3,8 +3,6 @@ package com.chess.engine.board;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ public abstract class Tile {
 
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTile() {
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
-        for (int i = 0; i < BoardUtils.NUM_TITLES; i++){
+        for (int i = 0; i < BoardUtils.NUM_TILES; i++){
             emptyTileMap.put(i, new EmptyTile(i));
         }
         //Collections.unmodifiableMap(emptyTileMap);

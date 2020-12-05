@@ -5,7 +5,7 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
-import com.chess.engine.player.MoveTranstion;
+import com.chess.engine.player.MoveTransition;
 import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
@@ -33,6 +33,8 @@ public class Table {
 
     private Tile sourceTile;
     private Tile destinationTile;
+
+
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
     private boolean highlightLegalMoves;
@@ -45,6 +47,8 @@ public class Table {
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
+
+
     public Table() throws IOException {
         this.gameFrame = new JFrame("Jchess");
         this.gameFrame.setLayout(new BorderLayout());
@@ -121,12 +125,13 @@ public class Table {
             super(new GridLayout(8,8));
             this.boardTiles = new ArrayList<>();
 
-            for(int i = 0; i < BoardUtils.NUM_TITLES; i++){
+            for(int i = 0; i < BoardUtils.NUM_TILES; i++){
                 final TilePanel tilePanel = new TilePanel(this,i);
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
+            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             validate();
         }
         public void drawBoard(final Board board) throws IOException {
@@ -147,9 +152,9 @@ public class Table {
             super(new GridBagLayout());
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
-            assignTilePieceIcon(chessBoard);
             assignTileColor();
-            validate();
+            assignTilePieceIcon(chessBoard);
+
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -161,16 +166,20 @@ public class Table {
                     } else if(isLeftMouseButton(e)){
                         // first click
                         if(sourceTile == null) {
-
+                            System.out.println("\nTile id: " + tileId);
                             sourceTile = chessBoard.getTile(tileId);
                             humanMovedPiece = sourceTile.getPiece();
+//                            System.out.println(humanMovedPiece.toString());
                             if (humanMovedPiece == null) {
                                 sourceTile = null;
                             }
                         } else{
                             destinationTile = chessBoard.getTile(tileId);
-                            final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(),destinationTile.getTileCoordinate());
-                            final MoveTranstion transtion = chessBoard.currentPlayer().makeMove(move);
+                            System.out.println("\n Des Tile id: " + tileId);
+                            final Move move = Move.MoveFactory.createMove(chessBoard,
+                                    sourceTile.getTileCoordinate(),
+                                    destinationTile.getTileCoordinate());
+                            final MoveTransition transtion = chessBoard.currentPlayer().makeMove(move);
                             if(transtion.getMoveStatus().isDone()){
                                 chessBoard = transtion.getBoard();
                             }
@@ -299,5 +308,30 @@ public class Table {
         };
         abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
         abstract BoardDirection opposite();
+    }
+    public static class MoveLog{
+        protected final List<Move> moves;
+        MoveLog(){
+            this.moves = new ArrayList<>();
+
+        }
+        public List<Move> getMoves(){
+            return this.moves;
+        }
+        public void addMove(final Move move ){
+            this.moves.add(move);
+        }
+        public int size(){
+            return this.moves.size();
+        }
+        public void clear(){
+            this.moves.clear();
+        }
+        public Move removeMove(int index){
+            return this.moves.remove(index);
+        }
+        public boolean removeMove(final Move move){
+            return this.moves.remove(move);
+        }
     }
 }

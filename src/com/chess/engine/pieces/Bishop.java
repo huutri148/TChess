@@ -14,10 +14,12 @@ import java.util.List;
 public class Bishop extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             { -9, -7, 7 , 9};
-    public Bishop(Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.BISHOP,pieceAlliance, piecePosition);
+    public Bishop(final Alliance pieceAlliance,final int piecePosition) {
+        super(PieceType.BISHOP, piecePosition,pieceAlliance,true);
     }
-
+    public Bishop(final Alliance pieceAlliance,final int piecePosition,final boolean isFirstMove) {
+        super(PieceType.BISHOP, piecePosition,pieceAlliance,isFirstMove);
+    }
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
