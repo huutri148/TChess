@@ -23,12 +23,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static com.chess.engine.board.Move.MoveFactory.*;
 import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Table {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
+    private final GameHistoryPanel gameHistoryPanel;
+    private final TakenPiecePanel takenPiecePanel;
+    private final MoveLog moveLog;
+
+
     private  Board chessBoard;
 
     private Tile sourceTile;
@@ -54,8 +60,13 @@ public class Table {
         this.gameFrame.setLayout(new BorderLayout());
         final JMenuBar tableMenuBar =  createTableMenuBar();
         this.chessBoard = Board.createStandardBoard();
+        this.gameHistoryPanel = new GameHistoryPanel();
+        this.takenPiecePanel = new TakenPiecePanel();
         this.boardPanel = new BoardPanel();
+        this.moveLog = new MoveLog();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+        this.gameFrame.add(this.takenPiecePanel, BorderLayout.WEST);
+        this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.gameFrame.setVisible(true);
@@ -176,12 +187,13 @@ public class Table {
                         } else{
                             destinationTile = chessBoard.getTile(tileId);
                             System.out.println("\n Des Tile id: " + tileId);
-                            final Move move = Move.MoveFactory.createMove(chessBoard,
+                            final Move move = createMove(chessBoard,
                                     sourceTile.getTileCoordinate(),
                                     destinationTile.getTileCoordinate());
-                            final MoveTransition transtion = chessBoard.currentPlayer().makeMove(move);
-                            if(transtion.getMoveStatus().isDone()){
-                                chessBoard = transtion.getBoard();
+                            final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                            if(transition.getMoveStatus().isDone()){
+                                chessBoard = transition.getBoard();
+                                moveLog.addMove(move);
                             }
                             sourceTile = null;
                             destinationTile = null;
@@ -191,6 +203,8 @@ public class Table {
                             @Override
                             public void run() {
                                 try {
+                                    gameHistoryPanel.redo(chessBoard, moveLog);
+                                    takenPiecePanel.redo(moveLog);
                                     boardPanel.drawBoard(chessBoard);
                                 } catch (IOException ioException) {
                                     ioException.printStackTrace();

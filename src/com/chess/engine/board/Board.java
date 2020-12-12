@@ -17,6 +17,10 @@ public class Board {
     private final Player currentPlayer;
 
 
+
+    private final Pawn enPassantPawn;
+
+
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
     //private final Move transitionMove;
@@ -24,7 +28,8 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
         this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
-        
+        this.enPassantPawn = builder.enPassantPawn;
+
         final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
         final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
 
@@ -56,6 +61,9 @@ public class Board {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    public Pawn getEnPassantPawn() {
+        return enPassantPawn;
+    }
     private static Collection<Piece> calculateActivePieces(final List<Tile> gameBoard,
                                                     final Alliance alliance){
         final List<Piece> activePieces = new ArrayList<>();

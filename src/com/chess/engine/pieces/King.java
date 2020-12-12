@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.chess.engine.board.Move.*;
+
 public class King extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
             {-9, -8, -7, -1, 1, 7, 8, 9};
@@ -36,12 +38,12 @@ public class King extends Piece{
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                 final Tile candinationDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if(!candinationDestinationTile.isTileOccupied()){
-                    legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 } else {
                     final Piece pieceAtDestination = candinationDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if(this.pieceAlliance != pieceAlliance){
-                        legalMoves.add(new Move.AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                     }
                 }
             }
