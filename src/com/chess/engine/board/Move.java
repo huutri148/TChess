@@ -37,6 +37,7 @@ public abstract class Move {
         result = prime * result + this.destinationCoordinate;
         result = prime * result + this.movedPiece.hashCode();
         result = prime * result + this.movedPiece.getPiecePosition();
+        result = result + (isFirstMove ? 1 : 0);
         return result;
     }
 
@@ -56,6 +57,9 @@ public abstract class Move {
 
     public int getCurrentCoordinate(){
         return this.movedPiece.getPiecePosition();
+    }
+    public Board getBoard() {
+        return board;
     }
     public boolean isAttack(){
         return false;
@@ -230,6 +234,58 @@ public abstract class Move {
             builder.setPiece(this.movedPiece.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
+        }
+    }
+    public static class PawnPromotion extends Move{
+        final Move decoratedMove;
+        final Pawn promotedPawn;
+
+        public PawnPromotion(final Move decoratedMove) {
+            super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(),decoratedMove.getDestinationCoordinate());
+            this.decoratedMove = decoratedMove;
+            this.promotedPawn = (Pawn) decoratedMove.getMovedPiece();
+        }
+
+        @Override
+        public int hashCode() {
+           return decoratedMove.hashCode() + (31 * promotedPawn.hashCode());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+           return this == obj || obj instanceof PawnPromotion && (super.equals(obj));
+        }
+
+        @Override
+        public Board execute() {
+           final Board pawnMovedBoard = this.decoratedMove.execute();
+           final Board.Builder builder = new Builder();
+           for(final Piece piece : pawnMovedBoard.currentPlayer().getActivePieces()){
+               if(!this.promotedPawn.equals(piece)) {
+                   builder.setPiece(piece);
+               }
+           }
+           for (final Piece piece : pawnMovedBoard.currentPlayer().getOpponent().getActivePieces()){
+               builder.setPiece(piece);
+           }
+           builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+           builder.setMoveMaker(pawnMovedBoard.currentPlayer().getOpponent().getAlliance());
+           return builder.build();
+        }
+
+        @Override
+        public boolean isAttack() {
+            return this.decoratedMove.isAttack();
+        }
+
+        @Override
+        public Piece getAttackedPiece() {
+           return  this.decoratedMove.getAttackedPiece();
+        }
+
+        @Override
+        public String toString() {
+            return "";
         }
     }
     public static class PawnJump extends Move{

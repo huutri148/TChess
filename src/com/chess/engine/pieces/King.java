@@ -36,11 +36,11 @@ public class King extends Piece{
                     isEighthColumnExclusion(this.piecePosition, currentCandidateOffset))
                     continue;
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
-                final Tile candinationDestinationTile = board.getTile(candidateDestinationCoordinate);
-                if(!candinationDestinationTile.isTileOccupied()){
+                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
+                if(!candidateDestinationTile.isTileOccupied()){
                     legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 } else {
-                    final Piece pieceAtDestination = candinationDestinationTile.getPiece();
+                    final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if(this.pieceAlliance != pieceAlliance){
                         legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));

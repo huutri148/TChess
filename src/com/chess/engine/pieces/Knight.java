@@ -69,12 +69,12 @@ public class Knight extends Piece{
     private static boolean isSevenColumnExclusion(final int currentPosition,
                                                   final int candidateOffset){
 
-        return BoardUtils.SEVENTH_COLUMN[currentPosition] && (candidateOffset == 6 || candidateOffset == -10 );
+        return BoardUtils.SEVENTH_COLUMN[currentPosition] && (candidateOffset == -6 || candidateOffset == 10 );
     }
-    private static boolean isEightColumnExclusion(final int currentPostion,
+    private static boolean isEightColumnExclusion(final int currentPosition,
                                                   final int candidateOffset){
-        return BoardUtils.EIGHTH_COLUMN[currentPostion]  && (candidateOffset == 17 || candidateOffset == 10 ||
-                candidateOffset == -6 || candidateOffset == 15);
+        return BoardUtils.EIGHTH_COLUMN[currentPosition]  && (candidateOffset == 17 || candidateOffset == 10 ||
+                candidateOffset == -6 || candidateOffset == -15);
     }
     @Override
     public String toString() {

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Rook extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES =
-            { -9, -1, 1 , 9};
+            { -8, -1, 1 , 8};
     public Rook(final Alliance pieceAlliance,final int piecePosition) {
         super(PieceType.ROOK,piecePosition,pieceAlliance,true);
     }
@@ -62,7 +62,7 @@ public class Rook extends Piece{
     }
     private static  boolean isEighthColumnExclusion(final int currentPosition,
                                                     final int candidateOffset){
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -1);
+        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
     }
     @Override
     public String toString() {
