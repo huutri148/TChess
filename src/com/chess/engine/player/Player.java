@@ -29,8 +29,8 @@ public abstract class Player {
                 opponentMoves).isEmpty();
     }
 
-    public static Collection<Move> calculateAttackOnTile(int piecePosition,
-                                                           Collection<Move> opponentMoves) {
+    public static Collection<Move> calculateAttackOnTile(final int piecePosition,
+                                                           final Collection<Move> opponentMoves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move : opponentMoves){
             if(piecePosition == move.getDestinationCoordinate()){
@@ -68,8 +68,8 @@ public abstract class Player {
     }
     protected boolean hasEscapeMoves() {
         for (final Move move : this.legalMoves){
-            final MoveTransition transtion = makeMove(move);
-            if(transtion.getMoveStatus().isDone()){
+            final MoveTransition transition = makeMove(move);
+            if(transition.getMoveStatus().isDone()){
                 return true;
             }
         }
