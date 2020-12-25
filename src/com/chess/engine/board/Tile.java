@@ -41,7 +41,6 @@ public abstract class Tile {
         @Override
         public boolean isTileOccupied() {
             return false;
-
         }
 
         @Override
