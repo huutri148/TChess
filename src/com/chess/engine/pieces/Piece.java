@@ -65,6 +65,10 @@ public abstract class Piece {
     public abstract Collection<Move> calculateLegalMoves(final Board board);
     public abstract Piece movePiece(Move move);
 
+    public int getPieceValue() {
+        return this.pieceType.getPieceValue();
+    }
+
     public enum PieceType{
         PAWN("P",100){
             @Override
@@ -121,7 +125,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KING("K",1000) {
+        KING("K",10000) {
             @Override
             public boolean isKing() {
                 return true;
