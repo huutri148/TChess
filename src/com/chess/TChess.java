@@ -9,6 +9,6 @@ public class TChess {
     public static void main(String[] args) throws IOException {
         Board board = Board.createStandardBoard();
         System.out.println(board);
-        Table table = new Table();
+        Table.get().show();
     }
 }
