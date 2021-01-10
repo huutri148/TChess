@@ -52,7 +52,7 @@ public class Table extends Observable {
 
     private Color lightTileColor = Color.decode("#FFFACD");
     private Color darkTileColor = Color.decode("#593E1A");
-    private static String defaultPieceImagesPath="Resource/image/";
+    public static String defaultPieceImagesPath="Resource/image/";
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
@@ -135,7 +135,6 @@ public class Table extends Observable {
     }
     public void updateGameBoard(final Board board){
         this.chessBoard = board;
-
     }
     public void updateComputerMove(final Move move){
         this.computerMove = move;
@@ -215,14 +214,14 @@ public class Table extends Observable {
         });
         preferencesMenu.add(flipBoardMenuItem);
         preferencesMenu.addSeparator();;
-        final JCheckBoxMenuItem legalMoveHightlighterCheckBox = new JCheckBoxMenuItem("Hightlight Legal Moves", false);
-        legalMoveHightlighterCheckBox.addActionListener(new ActionListener() {
+        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+        legalMoveHighlighterCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                highlightLegalMoves = legalMoveHightlighterCheckBox.isSelected();
+                highlightLegalMoves = legalMoveHighlighterCheckBox.isSelected();
             }
         });
-        preferencesMenu.add(legalMoveHightlighterCheckBox);
+        preferencesMenu.add(legalMoveHighlighterCheckBox);
         return preferencesMenu;
     }
 
