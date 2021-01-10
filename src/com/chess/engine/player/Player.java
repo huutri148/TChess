@@ -45,7 +45,6 @@ public abstract class Player {
             if(piece.getPieceType().isKing()){
                 return (King)piece;
             }
-
         }
         throw new RuntimeException("Should not reach here! Not a valid board!");
     }
@@ -98,6 +97,8 @@ public abstract class Player {
             return new MoveTransition(this.board, move,MoveStatus.LEAVES_PLAYER_IN_CHECK);
         }
         return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+
+
     }
 
     public abstract Collection<Piece> getActivePieces();

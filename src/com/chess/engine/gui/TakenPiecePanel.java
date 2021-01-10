@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.chess.engine.gui.Table.defaultPieceImagesPath;
+
 public class TakenPiecePanel extends JPanel {
     private static final EtchedBorder PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
     private static final Color PANEL_COLOR = Color.decode("0xFDFE6");
@@ -34,7 +36,7 @@ public class TakenPiecePanel extends JPanel {
         this.northPanel.setBackground(PANEL_COLOR);
         this.southPanel.setBackground(PANEL_COLOR);
         add(this.northPanel, BorderLayout.NORTH);
-        add(this.northPanel, BorderLayout.SOUTH);
+        add(this.southPanel, BorderLayout.SOUTH);
         setPreferredSize(TAKEN_PIECES_DIMENSION);
 
     }
@@ -73,21 +75,23 @@ public class TakenPiecePanel extends JPanel {
 
         for(final Piece takenPiece : whiteTakenPieces){
             try{
-                final BufferedImage image = ImageIO.read(new File("Resource/image" + takenPiece.getPieceAlliance().toString().substring(0,1) +
-                        takenPiece.toString()));
+                final BufferedImage image = ImageIO.read(new File("Resource/image/" + takenPiece.getPieceAlliance().toString().substring(0,1) +
+                        takenPiece.toString()+ ".gif" ));
                 final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
+                final JLabel imageLabel = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
+                        icon.getIconWidth() -15, icon.getIconWidth() -15, Image.SCALE_SMOOTH)));
+                this.northPanel.add(imageLabel);
             } catch (final IOException e){
                 e.printStackTrace();
             }
         }
-        for(final Piece takenPiece : whiteTakenPieces){
+        for(final Piece takenPiece : blackTakenPieces){
             try{
-                final BufferedImage image = ImageIO.read(new File("Resource/image" + takenPiece.getPieceAlliance().toString().substring(0,1) +
-                        takenPiece.toString()));
+                final BufferedImage image = ImageIO.read(new File(defaultPieceImagesPath + takenPiece.getPieceAlliance().toString().substring(0,1) +
+                        takenPiece.toString()+ ".gif" ) );
                 final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
+                final JLabel imageLabel = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
+                        icon.getIconWidth() -15, icon.getIconWidth() -15, Image.SCALE_SMOOTH)));
                 this.southPanel.add(imageLabel);
             } catch (final IOException e){
                 e.printStackTrace();

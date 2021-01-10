@@ -15,7 +15,8 @@ import static com.chess.engine.board.Move.*;
 
 public class Knight extends Piece{
 
-    private final static int[] CANDIDATE_MOVE_COODINATES = {-17, -15, -10, -6,
+
+    private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10, -6,
     6, 10, 15, 17};
     public Knight( final Alliance pieceAlliance,final int piecePosition) {
         super(PieceType.KNIGHT, piecePosition,pieceAlliance,true);
@@ -32,7 +33,7 @@ public class Knight extends Piece{
         int candidateDestinationCoordinate;
         final List<Move> legalMoves = new ArrayList<>();
 
-        for (final int currentCandidateOffset : CANDIDATE_MOVE_COODINATES){
+        for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES){
             candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                 if (isFirstColumnExclusion(this.piecePosition, currentCandidateOffset) ||
