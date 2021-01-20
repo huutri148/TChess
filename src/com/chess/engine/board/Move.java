@@ -5,9 +5,11 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.MoveStatus;
 
+import java.io.Serializable;
+
 import static com.chess.engine.board.Board.*;
 
-public abstract class Move {
+public abstract class Move implements Serializable {
     protected final Board board;
     protected final Piece movedPiece;
     protected final int destinationCoordinate;

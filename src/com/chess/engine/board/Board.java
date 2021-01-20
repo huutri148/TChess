@@ -6,9 +6,10 @@ import com.chess.engine.player.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Board {
+public class Board implements Serializable {
     private List<Tile> gameBoard;
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;

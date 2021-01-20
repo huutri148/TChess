@@ -3,10 +3,11 @@ package com.chess.engine.board;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableMap;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Tile {
+public abstract class Tile implements Serializable {
     final protected int tileCoordinate;
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTile();
 
