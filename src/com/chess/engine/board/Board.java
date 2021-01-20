@@ -2,9 +2,7 @@ package com.chess.engine.board;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.pieces.*;
-import com.chess.engine.player.BlackPlayer;
-import com.chess.engine.player.Player;
-import com.chess.engine.player.WhitePlayer;
+import com.chess.engine.player.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -77,6 +75,13 @@ public class Board {
         }
         return ImmutableList.copyOf(activePieces);
     }
+
+    public MoveTransition unMakeMove(final Move move){
+        return new MoveTransition(move.undo(), move,MoveStatus.DONE);
+    }
+    public Iterable<Piece> getAllPieces(){
+        return Iterables.concat(this.whitePieces, this.blackPieces);
+    }
     public Tile getTile(final int titleCoordiante){
         return gameBoard.get(titleCoordiante);
     }
@@ -94,7 +99,7 @@ public class Board {
         builder.setPiece(new Knight(Alliance.BLACK, 1));
         builder.setPiece(new Bishop(Alliance.BLACK, 2));
         builder.setPiece(new Queen( Alliance.BLACK,3));
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4,true,true));
         builder.setPiece(new Bishop(Alliance.BLACK, 5));
         builder.setPiece(new Knight(Alliance.BLACK, 6));
         builder.setPiece(new Rook(Alliance.BLACK, 7));
@@ -119,7 +124,7 @@ public class Board {
         builder.setPiece(new Knight(Alliance.WHITE, 57));
         builder.setPiece(new Bishop(Alliance.WHITE, 58));
         builder.setPiece(new Queen( Alliance.WHITE,59));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60,true,true));
         builder.setPiece(new Bishop(Alliance.WHITE, 61));
         builder.setPiece(new Knight(Alliance.WHITE, 62));
         builder.setPiece(new Rook(Alliance.WHITE, 63));
