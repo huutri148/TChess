@@ -23,6 +23,7 @@ public class Pawn extends Piece{
     }
     @Override
     public Pawn movePiece(final Move move) {
+        // Todo: Need to change it so it don't be a first move
         return new Pawn(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
     }
     @Override

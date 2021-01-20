@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,10 @@ public class Table extends Observable {
     private final TakenPiecePanel takenPiecePanel;
     private final MoveLog moveLog;
     private final GameSetup gameSetup;
+
+
+
+    private final ChatPanel chatPanel;
 
     private  Board chessBoard;
 
@@ -76,17 +81,25 @@ public class Table extends Observable {
     private Table() throws IOException {
         this.gameFrame = new JFrame("Tchess");
         this.gameFrame.setLayout(new BorderLayout());
+
         final JMenuBar tableMenuBar =  createTableMenuBar();
         this.chessBoard = Board.createStandardBoard();
         this.gameHistoryPanel = new GameHistoryPanel();
         this.takenPiecePanel = new TakenPiecePanel();
         this.boardPanel = new BoardPanel();
         this.moveLog = new MoveLog();
+        this.chatPanel = new ChatPanel();
         this.addObserver(new TableGameAIWatcher());
+
+
         this.gameSetup = new GameSetup(this.gameFrame, true);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.takenPiecePanel, BorderLayout.WEST);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
+//        this.gameFrame.add(this.chatPanel, BorderLayout.SOUTH);
+
+
+
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.gameFrame.setVisible(true);
@@ -102,6 +115,7 @@ public class Table extends Observable {
         Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
         Table.get().getTakenPiecePanel().redo(Table.get().getMoveLog());
         Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+        Table.get().getChatPanel().redo();
     }
     private GameSetup getGameSetup(){
         return this.gameSetup;
@@ -143,6 +157,9 @@ public class Table extends Observable {
     private MoveLog getMoveLog(){
         return this.moveLog;
     }
+    public ChatPanel getChatPanel() {
+        return chatPanel;
+    }
     private GameHistoryPanel getGameHistoryPanel(){
         return this.gameHistoryPanel;
     }
@@ -164,7 +181,6 @@ public class Table extends Observable {
         @Override
         protected Move doInBackground() throws Exception {
             final MoveStrategy miniMax = new Minimax(4);
-
             final Move bestMove = miniMax.execute(Table.get().getGameBoard());
 
 
@@ -258,8 +274,75 @@ public class Table extends Observable {
             }
         });
         optionsMenu.add(setupGameMenuItem);
+
+
+        final JMenuItem resetMenuItem = new JMenuItem("New Game");
+        resetMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    undoAllMoves();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+        optionsMenu.add(resetMenuItem);
+
+
+        final JMenuItem legalMovesMenuItem = new JMenuItem("Current State");
+        legalMovesMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(Table.get().getGameBoard().getWhitePieces());
+                System.out.println(Table.get().getGameBoard().getBlackPieces());
+                System.out.println(Table.get().getGameBoard().currentPlayer().playerInfo());
+                System.out.println(Table.get().getGameBoard().currentPlayer().getOpponent().playerInfo());
+            }
+        });
+        optionsMenu.add(legalMovesMenuItem);
+
+
+        final JMenuItem undoMoveMenuItem = new JMenuItem("Undo last move");
+        undoMoveMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Table.get().getMoveLog().size() > 0){
+                    try {
+                        undoLastMove();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+        });
+        optionsMenu.add(undoMoveMenuItem);
+
         return optionsMenu;
     }
+
+    private void undoAllMoves() throws IOException {
+        for(int i = Table.get().getMoveLog().size() - 1; i >= 0; i--) {
+            final Move lastMove = Table.get().getMoveLog().removeMove(Table.get().getMoveLog().size() - 1);
+            this.chessBoard = this.chessBoard.unMakeMove(lastMove).getBoard();
+        }
+        Table.get().getMoveLog().clear();
+        Table.get().getGameHistoryPanel().redo(chessBoard,Table.get().getMoveLog());
+        Table.get().getTakenPiecePanel().redo(Table.get().getMoveLog());
+        Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+        Table.get().getChatPanel().redo();
+    }
+
+    private void undoLastMove() throws IOException {
+        final Move lastMove = Table.get().getMoveLog().removeMove(Table.get().getMoveLog().size() -1);
+        this.chessBoard = this.chessBoard.unMakeMove(lastMove).getBoard();
+        Table.get().getMoveLog().removeMove(lastMove);
+        Table.get().getGameHistoryPanel().redo(chessBoard,Table.get().getMoveLog());
+        Table.get().getTakenPiecePanel().redo(moveLog);
+        Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+        Table.get().getChatPanel().redo();
+    }
+
     private class BoardPanel extends JPanel{
         final List<TilePanel> boardTiles;
         BoardPanel() throws IOException {

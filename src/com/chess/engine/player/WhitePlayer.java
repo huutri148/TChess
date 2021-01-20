@@ -38,7 +38,8 @@ public class WhitePlayer extends Player{
 
     @Override
     protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,final Collection<Move> opponentsLegals) {
-        final List<Move> kingCastles = new ArrayList<>();
+//        final List<Move> kingCastles = new ArrayList<>();
+        final ImmutableList.Builder<Move> kingCastles = new ImmutableList.Builder<>();
         if(this.playerKing.isFirstMove() && !this.isInCheck()){
             //white king side castle
             if(!this.board.getTile(61).isTileOccupied() && !this.board.getTile(62).isTileOccupied()){
@@ -73,6 +74,6 @@ public class WhitePlayer extends Player{
                                         59));
             }
         }
-        return ImmutableList.copyOf(kingCastles);
+        return kingCastles.build();
     }
 }
