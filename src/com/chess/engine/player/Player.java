@@ -8,11 +8,12 @@ import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class Player {
+public abstract class Player implements Serializable {
     protected final Board board;
     protected final King playerKing;
     protected final Collection<Move> legalMoves;

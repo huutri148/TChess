@@ -31,6 +31,7 @@ public class Client extends NetworkEntity{
     private void connectToServer(){
         try{
             connectionHandle = new Socket(InetAddress.getByName(hostName), serverPort);
+            System.out.println("Connecting to server");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

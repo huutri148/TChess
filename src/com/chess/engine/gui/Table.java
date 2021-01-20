@@ -39,6 +39,10 @@ public class Table extends Observable {
 
 
 
+    private final MultiPlayerSetup multiPlayerSetup;
+
+
+
     private final ChatPanel chatPanel;
 
     private  Board chessBoard;
@@ -89,10 +93,12 @@ public class Table extends Observable {
         this.boardPanel = new BoardPanel();
         this.moveLog = new MoveLog();
         this.chatPanel = new ChatPanel();
+
         this.addObserver(new TableGameAIWatcher());
 
 
         this.gameSetup = new GameSetup(this.gameFrame, true);
+        this.multiPlayerSetup = new MultiPlayerSetup(this.gameFrame, true);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.takenPiecePanel, BorderLayout.WEST);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
@@ -104,7 +110,7 @@ public class Table extends Observable {
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.gameFrame.setVisible(true);
         this.boardDirection = BoardDirection.NORMAL;
-        this.highlightLegalMoves = false;
+        this.highlightLegalMoves = true;
     }
 
     public static Table get(){
@@ -120,12 +126,16 @@ public class Table extends Observable {
     private GameSetup getGameSetup(){
         return this.gameSetup;
     }
-    private Board getGameBoard(){
+    public Board getGameBoard(){
         return this.chessBoard;
     }
     private void setupUpdate(final GameSetup gameSetup){
         setChanged();
         notifyObservers(gameSetup);
+    }
+    private void setupMultiUpdate(final MultiPlayerSetup multiPlayerSetup){
+        setChanged();
+        notifyObservers(multiPlayerSetup);
     }
     private static class TableGameAIWatcher implements Observer{
 
@@ -154,19 +164,22 @@ public class Table extends Observable {
         this.computerMove = move;
     }
 
-    private MoveLog getMoveLog(){
+    public MoveLog getMoveLog(){
         return this.moveLog;
     }
     public ChatPanel getChatPanel() {
         return chatPanel;
     }
-    private GameHistoryPanel getGameHistoryPanel(){
+    public MultiPlayerSetup getMultiPlayerSetup() {
+        return multiPlayerSetup;
+    }
+    public GameHistoryPanel getGameHistoryPanel(){
         return this.gameHistoryPanel;
     }
-    private TakenPiecePanel getTakenPiecePanel(){
+    public TakenPiecePanel getTakenPiecePanel(){
         return this.takenPiecePanel;
     }
-    private BoardPanel getBoardPanel(){
+    public BoardPanel getBoardPanel(){
         return this.boardPanel;
     }
     private void moveMadeUpdate(final PlayerType playerType){
@@ -230,7 +243,7 @@ public class Table extends Observable {
         });
         preferencesMenu.add(flipBoardMenuItem);
         preferencesMenu.addSeparator();;
-        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", true);
         legalMoveHighlighterCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -275,6 +288,16 @@ public class Table extends Observable {
         });
         optionsMenu.add(setupGameMenuItem);
 
+
+        final JMenuItem setupMultiPlayerItem  = new JMenuItem("Setup MultiPlayer");
+        setupMultiPlayerItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Table.get().getMultiPlayerSetup().promptUser();
+//                Table.get().setupMultiUpdate(Table.get().getMultiPlayerSetup());
+            }
+        });
+        optionsMenu.add(setupMultiPlayerItem);
 
         final JMenuItem resetMenuItem = new JMenuItem("New Game");
         resetMenuItem.addActionListener(new ActionListener() {
@@ -343,7 +366,7 @@ public class Table extends Observable {
         Table.get().getChatPanel().redo();
     }
 
-    private class BoardPanel extends JPanel{
+    public class BoardPanel extends JPanel{
         final List<TilePanel> boardTiles;
         BoardPanel() throws IOException {
             super(new GridLayout(8,8));
@@ -407,6 +430,9 @@ public class Table extends Observable {
                             if(transition.getMoveStatus().isDone()){
                                 chessBoard = transition.getBoard();
                                 moveLog.addMove(move);
+                                if(Table.get().getMultiPlayerSetup().isConnected){
+                                    Table.get().getMultiPlayerSetup().getNetworkEntity().sendData(move);
+                                }
                             }
                             sourceTile = null;
                             destinationTile = null;

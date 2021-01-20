@@ -2,6 +2,7 @@ package com.network;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.gui.Table;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,6 +59,12 @@ public abstract class NetworkEntity extends Thread{
             }
             if (receivedMessage instanceof Move){
                 final Move m = (Move) receivedMessage;
+                Table.get().updateComputerMove(m);
+                Table.get().updateGameBoard(Table.get().getGameBoard().currentPlayer().makeMove(m).getBoard());
+                Table.get().getMoveLog().addMove(m);
+                Table.get().getGameHistoryPanel().redo(Table.get().getGameBoard(),Table.get().getMoveLog());
+                Table.get().getTakenPiecePanel().redo(Table.get().getMoveLog());
+                Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
 
             } else if (receivedMessage instanceof Board){
                 final Board b = (Board) receivedMessage;
@@ -70,6 +77,7 @@ public abstract class NetworkEntity extends Thread{
         try {
             outputStream.writeObject(objToSend);
             outputStream.flush();
+            System.out.println("Send Move successfully");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-# Super Mario Bros 3
+# Game Cờ Vua
 <p align="center">Đồ án môn học ngôn ngữ lập trình Java - Trường Đại học Công nghệ thông tin - DHQG HCM.</p>
 
 ### GIẢNG VIÊN HƯỚNG DẪN:

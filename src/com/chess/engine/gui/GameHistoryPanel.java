@@ -28,7 +28,7 @@ public class GameHistoryPanel extends JPanel {
 
         this.setVisible(true);
     }
-    void redo(final Board board, final MoveLog moveHistory){
+    public void redo(final Board board, final MoveLog moveHistory){
         int currentRow = 0;
         this.model.clear();
         for(final Move move : moveHistory.getMoves()){
