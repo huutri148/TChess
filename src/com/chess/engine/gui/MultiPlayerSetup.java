@@ -13,8 +13,7 @@ import java.io.IOException;
 public class MultiPlayerSetup extends JDialog {
     private final JTextField hostName;
     private final JTextField portNumber;
-    public boolean isConnected;
-
+    public boolean isConnected ;
 
 
     public NetworkEntity networkEntity;
@@ -25,7 +24,7 @@ public class MultiPlayerSetup extends JDialog {
         final JPanel myPanel = new JPanel(new GridLayout(0,1));
         this.hostName  = new JTextField("localhost");
         this.portNumber = new JTextField("14");
-        isConnected = true;
+        isConnected= false;
         getContentPane().add(myPanel);
         myPanel.add(new JLabel("Host"));
         myPanel.add(hostName);
@@ -42,10 +41,11 @@ public class MultiPlayerSetup extends JDialog {
                 int _portNumber = Integer.parseInt(portNumber.getText());
                 System.out.println(_portNumber);
                 networkEntity = new Server(_portNumber);
+                MultiPlayerSetup.this.setVisible(false);
                 networkEntity.start();
                 networkEntity.run();
                 isConnected = true;
-                MultiPlayerSetup.this.setVisible(false);
+
             }
         });
 

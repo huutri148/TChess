@@ -1,5 +1,7 @@
 package com.network;
 
+import com.chess.engine.gui.Table;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
