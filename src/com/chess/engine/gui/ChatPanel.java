@@ -2,6 +2,8 @@ package com.chess.engine.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,5 +27,6 @@ public class ChatPanel extends JPanel implements Observer {
     public void redo(){
         validate();
     }
+
 
 }

@@ -56,6 +56,7 @@ public class GameSetup extends JDialog {
                 whitePlayerType = whiteComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
                 blackPlayerType = blackComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
                 GameSetup.this.setVisible(false);
+                Table.get().getMultiPlayerSetup().isConnected = false;
             }
         });
 

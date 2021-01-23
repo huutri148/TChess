@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Observable;
 
 public abstract class NetworkEntity extends Thread{
     protected ObjectInputStream inputStream;
